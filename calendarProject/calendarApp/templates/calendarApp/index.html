@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+{% load static %}
+<link rel="stylesheet" href="{% static 'CalendarApp/style.css' %}">
+<html lang="ru">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+
+
+<body>
+
+    <meta charset="UTF-8">
+    <title>Calendar</title>
+
+<!--<div class="dropdownCurrentDate">-->
+<!--    <div class="currentDayButton"><button type="button" class="btn btn-secondary btn-lg">CurrentDate</button></div>-->
+<!--    <div class="dropdown-content">-->
+<!--    <ul>-->
+<!--        <li><p>2022 year</p></li>-->
+<!--        <li><p>Date: {{ current_date }}</p></li>-->
+<!--        <li><p>Month: {{ page_obj.object_list.0 }}</p></li>-->
+<!--    </ul>-->
+<!--    </div>-->
+<!--</div>-->
+
+{% for all_month in page_obj %}
+{{ all_month.full_name|upper }}
+{% endfor %}
+
+
+<div class="mainPanel">
+    <div class="tableAndPic">
+        <div class="tabelPanel">
+            <table class="table">
+                <tr>
+                    {% for q in days_of_the_week %}
+                    <th>{{ q }}</th>
+                    {% endfor %}
+                </tr>
+                {% for w in m %}
+                <tr>
+                    {% for d in w %}
+                   <td>
+                       {% if d == now_day and current_month == num_page_month %}
+                        <div class="currentDay">{{ now_day }}</div>
+                        {% else %}
+                        <input type="text" class="displayNotice" data-bind="visible: display">
+                        <div onclick="togCell('grey')" class="case" data-bind="click: curDay">{{ d }}</div>
+                       {% endif %}
+                   </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="leftSidePanel">
+            <img class="mountainsPic" src="https://wallpaperaccess.com/full/2888312.jpg">
+                <div class="monthName">
+                    <p>{{ month }} - {{ current_year }}</p>
+                </div>
+                <div class="dateNumber">
+                    <p>{{ now_day }}</p>
+                </div>
+            <div class="todayBtn"><a href="?page={{ current_month }}">Today</a></div>
+        </div>
+    </div>
+</div>
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <!--<a href="?page=1">&laquo; first</a>-->
+            <div class="leftArrow">
+                <a href="?page={{ page_obj.previous_page_number }}"><img src="https://cdn-icons-png.flaticon.com/512/271/271220.png"></a>
+            </div>
+        {% endif %}
+
+<!--        <span class="currentMonth">-->
+<!--            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.-->
+<!--        </span>-->
+
+        {% if page_obj.has_next %}
+            <div class="rightArrow">
+                <a href="?page={{ page_obj.next_page_number }}"><img src="https://cdn-icons-png.flaticon.com/512/271/271228.png"></a>
+            </div>
+        <!--<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>-->
+        {% endif %}
+    </span>
+    </div>
+<input type="text" data-bind="value: dayNum">
+    <script src="{% static 'script.js' %}"></script>
+
+
+</body>
+</head>
+</html>
+
