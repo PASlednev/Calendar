@@ -38,24 +38,19 @@
         <div class="tabelPanel">
             <table class="table">
                 <tr>
-                    {% for q in days_of_the_week %}
-                    <th>{{ q }}</th>
-                    {% endfor %}
+                    <!-- ko foreach: weekDays -->
+                    <td data-bind="text: $data" class="weekDays"></td>
+                    <!-- /ko -->
                 </tr>
-                {% for w in m %}
+                    <!-- ko foreach: mo -->
+
                 <tr>
-                    {% for d in w %}
-                   <td>
-                       {% if d == now_day and current_month == num_page_month %}
-                        <div class="currentDay">{{ now_day }}</div>
-                        {% else %}
-                        <input type="text" class="displayNotice" data-bind="visible: display">
-                        <div onclick="togCell('grey')" class="case" data-bind="click: curDay">{{ d }}</div>
-                       {% endif %}
-                   </td>
-                    {% endfor %}
+                    <!-- ko foreach: $data -->
+                    <td data-bind="text: $data"></td>
+                    <!-- /ko -->
                 </tr>
-                {% endfor %}
+                    <!-- /ko -->
+
             </table>
         </div>
         <div class="leftSidePanel">
@@ -70,28 +65,29 @@
         </div>
     </div>
 </div>
-    <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-        <!--<a href="?page=1">&laquo; first</a>-->
-            <div class="leftArrow">
-                <a href="?page={{ page_obj.previous_page_number }}"><img src="https://cdn-icons-png.flaticon.com/512/271/271220.png"></a>
-            </div>
-        {% endif %}
+    <div class="nextMonth">1</div>
+    <div class="prevMonth">2</div>
+<!--    <div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--        {% if page_obj.has_previous %}-->
+<!--        &lt;!&ndash;<a href="?page=1">&laquo; first</a>&ndash;&gt;-->
+<!--            <div class="leftArrow">-->
+<!--                <a href="?page={{ page_obj.previous_page_number }}"><img src="https://cdn-icons-png.flaticon.com/512/271/271220.png"></a>-->
+<!--            </div>-->
+<!--        {% endif %}-->
 
-<!--        <span class="currentMonth">-->
-<!--            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.-->
-<!--        </span>-->
+<!--&lt;!&ndash;        <span class="currentMonth">&ndash;&gt;-->
+<!--&lt;!&ndash;            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.&ndash;&gt;-->
+<!--&lt;!&ndash;        </span>&ndash;&gt;-->
 
-        {% if page_obj.has_next %}
-            <div class="rightArrow">
-                <a href="?page={{ page_obj.next_page_number }}"><img src="https://cdn-icons-png.flaticon.com/512/271/271228.png"></a>
-            </div>
-        <!--<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>-->
-        {% endif %}
-    </span>
-    </div>
-<input type="text" data-bind="value: dayNum">
+<!--        {% if page_obj.has_next %}-->
+<!--            <div class="rightArrow">-->
+<!--                <a href="?page={{ page_obj.next_page_number }}"><img src="https://cdn-icons-png.flaticon.com/512/271/271228.png"></a>-->
+<!--            </div>-->
+<!--        &lt;!&ndash;<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>&ndash;&gt;-->
+<!--        {% endif %}-->
+<!--    </span>-->
+<!--    </div>-->
     <script src="{% static 'script.js' %}"></script>
 
 

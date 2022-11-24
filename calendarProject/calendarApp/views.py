@@ -66,6 +66,7 @@ def index(request):
                 week.append("-")
         mo.append(week)
 
+
     context = {
         'days_of_the_week': days_of_the_week,
         'page_obj': page_object,

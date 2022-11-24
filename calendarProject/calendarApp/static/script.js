@@ -1,161 +1,111 @@
-let table = document.getElementsByClassName('table')
-    table[0].onclick = function(e){
-        if (e.target.className == 'currentDay' || e.target.className == 'case')
-            document.getElementsByClassName('dateNumber')[0].innerText = e.target.childNodes[0].innerText ?? e.target.innerText
-    }
+//
+//allYear = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]
+//allMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+//
+//
+//function amountOfMonth (month, year) {
+//    let yr = !((year % 4) || (!(year % 100) && (year % 400)))
+//    if (month == 0 || month == 2 || month == 4 || month == 6 || month == 7 || month == 9 || month == 11)
+//        return 31
+//    else if ((yr && month == 1))
+//        return 29
+//    else if (month == 1)
+//        return 28
+//    else
+//        return 30
+//}
+//
+//
+//let mon = amountOfMonth(1, 2004)
+//let arr = []
+//let curMonth = []
+//for (let i = 1; i <= mon; i++){
+//    arr.push(i);
+//}
+//let currentMonth = arr.join(' ')
+//console.log(currentMonth)
+//console.log(mon)
+//console.log(arr)
 
 
-var el = undefined;
-function togCell(col) {
-    if (el !== undefined) el.style.backgroundColor = "";
-    if (typeof event !== 'undefined')
-        el = event.target
-    el.style.backgroundColor = col
-    }
+let m_ = {
 
+    set days(number) {
+        const days = this.getDaysInMonth();
+        this.day = (number + days) % days;
+    },
 
-class Calendar{
-    constructor(d, m, y){
-        this.day = d;
-        this.month = m;
-        this.year = y;
-    }
-    set weekDays(weekDay) {
-        this.day = weekDay % 32
-    }
+     get days() {
+        return this.day;
+    },
 
-    get weekDays(){
-        return this.day
-    }
+    getDaysInMonth(year = this.year, month = this.month) {
+        return [31, this.isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
+    },
 
-    set curMonth(thisMonth){
-        if (thisMonth > 0 && thisMonth < 13){
-            this.month = thisMonth
-        }
-    }
+    isLeapYear(year = this.year) {
+        return (year % 400 === 0 || year % 100 !== 0) && (year % 4 == 0);
+    },
 
-    get curMonth(){
+     nextMonth() {
+        if (this.month++ === 11) this.nextYear();
+        return this.month
+
+    },
+
+    prevMonth() {
+        if (this.month-- === 0) this.prevYear();
         return this.month
     }
 
-    set curYear(thisYear){
-        if (thisYear > 0 && thisYear < 5000){
-            this.year = thisYear
-        }
-        else this.year = 'Error'
-    }
-
-    get curYear(){
-        return this.year
-    }
 }
+m_.day = 23
+m_.month = 9
+m_.year = 2022
+console.log(m_.getDaysInMonth())
 
-let m = new Calendar()
 
-m.curMonth = 11
-m.curYear = 2022
+let arr = []
+for (let i = 1; i <= m_.getDaysInMonth(); i++){
+    arr.push(i);
+}
+console.log(arr)
 
-console.log(document.querySelector('.displayNotice'))
-let currentDay = function() {
-    let self = this
-    self.display = ko.observable(false)
-    self.dayNum = ko.observable()
-    self.curDay = function(d, w) {
-        self.dayNum(w.target.innerText)
-        m.weekDays = dayNum()
-        console.log(display())
-        console.log(m.weekDays)
-        if(self.display()==false)
-            self.display(true);
-        else
-            self.display(false);
+function getWeeks(year, month)
+ {
+  let l=new Date(year, month+1, 0);
+  return Math.ceil( (l.getDate()- (l.getDay()?l.getDay():7))/7 )+1;
+ }
+console.log(getWeeks(2022,9))
+
+
+function startMonth(year, month){
+    let d = new Date(year, month, 0);
+    return d.getDay()
+}
+console.log(startMonth(2022, 9))
+
+let mo = []
+function getMonth(year, month){
+    for (let i = 0; i < Math.ceil((arr.length + startMonth(year, month)) / 7); i++){
+        let ar = []
+        for(let k = 1; k < 8; k++){
+            let currentDay = k + i * 7
+            if (currentDay <= arr.length + startMonth(year, month) && currentDay > startMonth(year, month)) {
+                ar.push(currentDay - startMonth(year, month))
+            }
+            else
+                ar.push('-')
+        }
+    mo.push(ar)
     }
+    return mo
+}
+console.log(getMonth(m_.year, m_.month))
 
-    self.m = m
+let viewModel = {
+    monthDays: mo,
+    weekDays: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
 };
-    ko.applyBindings(currentDay);
 
-
-
-
-
-
-
-
-
-
-
-
-//console.log(viewModel.numberOfClicks.subscribe)
-
-//function getGroups(array) {
-//    const groups = [];
-//    for (let i = 0; i < array.length; i++){
-//        if (!groups.includes(array[i].f))
-//            groups.push(array[i].f)
-//    }
-//    return groups
-//}
-//
-//function sortByGroups(array, groups) {
-//let result = []
-//    for (let j = 0; j < groups.length; j++){
-//        const group = getElementsByGroup(array, groups[j])
-//        result.push(group)
-//    }
-//
-//    return result
-//}
-//
-//function getElementsByGroup(array, groupValue) {
-//    const result = [];
-//    for(let i = 0; i < array.length; i++) {
-//        if (array[i].f == groupValue)
-//            result.push(array[i])
-//            console.log('groupValue :', groupValue)
-//    }
-//    return result;
-//}
-//
-//
-//let arr = [{f:1}, {f:2}, {f:3}, {f:2}, {f:7}, {f:1}, {f:3}]
-//
-//let map = new Map();
-//
-//for(i=0; i<arr.length; i++){
-//    const value = arr[i];
-//    if (map.has(value.f))
-//        map.get(value.f).push(value)
-//    else
-//        map.set(value.f, [value])
-//}
-//
-//function ff(arr){
-//    for(i=0; i<arr.length; i++)
-//        map.has(arr[i].f) ? map.get(arr[i].f).push(arr[i]) : map.set(arr[i].f, [arr[i]])
-//}
-//console.log(map)
-//
-//
-//console.log("array: ", arr);
-//const groups = getGroups(arr);
-//console.log("groups: ", groups);
-//const result = sortByGroups(arr, groups)
-//console.log(result)
-
-//var doTest = [1, 3, 4, 1, 1, 3, 4, 5];
-//let resultt = {}
-//function findOdd(A) {
-//  for (let i = 0; i < doTest.length; ++i){
-//    let a = doTest[i];
-//    if (result[a] != undefined){
-//      ++resultt[a];
-//    }
-//    else {
-//      resultt[a] = 1
-//    }
-//  }
-//  if (a % 2 != 0){
-//  return a;
-//  }
-//}
+ko.applyBindings(viewModel);
