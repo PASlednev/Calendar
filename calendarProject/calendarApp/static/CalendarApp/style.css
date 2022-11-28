@@ -38,6 +38,11 @@
 <!--   border: 2px solid black;-->
    }
 
+   input {
+   display: block;
+   visibility: visible
+   }
+
    .leftSidePanel img{
    position: absolute;
    width: 100%;
