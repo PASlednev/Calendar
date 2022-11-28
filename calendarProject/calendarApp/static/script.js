@@ -28,62 +28,60 @@
 //console.log(arr)
 
 
-let m_ = {
 
-    set days(number) {
-        const days = this.getDaysInMonth();
-        this.day = (number + days) % days;
-    },
-
-     get days() {
-        return this.day;
-    },
-
-    getDaysInMonth(year, month = this.month) {
-        return [31, this.isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
-    },
-
-    isLeapYear(year = this.year) {
-        return (year % 400 === 0 || year % 100 !== 0) && (year % 4 == 0);
-    },
-
-     nextMonth() {
-        if (this.month++ === 11) this.nextYear();
-        return this.month
-
-    },
-
-    prevMonth() {
-        if (this.month-- === 0) this.prevYear();
-        return this.month
+    function setDays(number) {
+        const days = getDaysInMonth(year, month);
+        day = (number + days) % days;
     }
 
-}
+     function getDays() {
+        return day;
+    }
+
+    function getDaysInMonth(year, month) {
+        return [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
+    }
+    console.log(getDaysInMonth(2022, 10))
+
+    function isLeapYear(year) {
+        return (year % 400 === 0 || year % 100 !== 0) && (year % 4 == 0);
+    }
+
+     function nextMonth() {
+        if (month++ === 11) nextYear();
+        return month
+
+    }
+
+    function prevMonth() {
+        if (month-- === 0) prevYear();
+        return month
+    }
+
 let now = new Date();
-
-m_.day = now.getDate()
-m_.month = now.getMonth()
-m_.year = now.getFullYear()
-
+day = now.getDate();
+month = now.getMonth();
+year = now.getFullYear();
 
 function getWeeks(year, month){
   let l=new Date(year, month+1, 0);
   return Math.ceil( (l.getDate()- (l.getDay()?l.getDay():7))/7 )+1;
 }
-
+console.log(getWeeks(2022,10))
 
 function startMonth(year, month){
     let d = new Date(year, month, 0);
     return d.getDay()
 }
+console.log(startMonth(2022,10))
 
 let mo = ko.observableArray()
-function getMonth(year, month){
 
-let arr = [];
-for (let i = 1; i <= m_.getDaysInMonth(); i++){
-    arr.push(i);
-}
+function getMonth(year, month){
+    let arr = [];
+    for (let i = 1; i <= getDaysInMonth(year, month); i++){
+        arr.push(i);
+    }
     for (let i = 0; i < Math.ceil((arr.length + startMonth(year, month)) / 7); i++){
         let ar = []
         for(let k = 1; k < 8; k++){
@@ -96,37 +94,37 @@ for (let i = 1; i <= m_.getDaysInMonth(); i++){
         }
     mo.push(ar)
     }
-
-    console.log(mo())
     return mo
 }
-
-console.log(getMonth(2022, 2)())
+let mon = getMonth(year, month)()
+console.log(mon)
 // let years = ko.observableArray()
 
 let viewModel = {
     monthDays: mo,
-    month: ko.observable(m_.month),
-    year: ko.observable(m_.year),
+    month: ko.observable(month),
+    year: ko.observable(year),
     weekDays: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
     years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030],
     displayInput: ko.observable(true),
     nxtMonth: function(_d,e){
-        mo.removeAll()
-        return getMonth(m_.year, m_.nextMonth())
+        mo.removeAll();
+        const next = nextMonth();
+        getMonth(year, next);
+        viewModel.month(next);
     },
     previousMonth: function(_d,e){
         mo.removeAll();
-        const prev = m_.prevMonth();
-        getMonth(m_.year, prev);
+        const prev = prevMonth();
+        getMonth(year, prev);
         viewModel.month(prev)
     },
     selectYear: function(_d,e){
-        yr = +(e.target.value)
         mo.removeAll()
-        return getMonth(yr, m_.month)
-    },
-
+        year = +(e.target.value)
+        getMonth(year, month)
+        viewModel.year(year)
+    }
 };
 
 ko.applyBindings(viewModel);

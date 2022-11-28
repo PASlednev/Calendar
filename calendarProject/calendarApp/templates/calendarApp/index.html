@@ -45,7 +45,7 @@
                     <!-- ko foreach: mo -->
                 <tr>
                     <!-- ko foreach: $data -->
-                    <td data-bind="text: $data"><input type="text" data-bind="if: displayInput"></td>
+                    <td data-bind="text: $data"></td>
                     <!-- /ko -->
                 </tr>
                     <!-- /ko -->
@@ -54,10 +54,10 @@
         <div class="leftSidePanel">
             <img class="mountainsPic" src="https://wallpaperaccess.com/full/2888312.jpg">
                 <div class="monthName">
-                    <p data-bind="text: month, text: m_.year"></p>
+                    <p data-bind="text: month"></p>
                 </div>
                 <div class="dateNumber">
-                    <p>{{ now_day }}</p>
+                    <p data-bind="text: year"></p>
                 </div>
             <div class="todayBtn"><a href="?page={{ current_month }}">Today</a></div>
         </div>
