@@ -53,10 +53,20 @@
 
     }
 
-    function prevMonth() {
+     function prevMonth() {
         if (month-- === 0) prevYear();
         return month
     }
+
+     function nextYear() {
+        return ++year;
+    }
+
+    function prevYear() {
+        return --year;
+    }
+
+
 
 let now = new Date();
 day = now.getDate();
@@ -106,12 +116,17 @@ let viewModel = {
     year: ko.observable(year),
     weekDays: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
     years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030],
-    displayInput: ko.observable(true),
     nxtMonth: function(_d,e){
         mo.removeAll();
         const next = nextMonth();
         getMonth(year, next);
         viewModel.month(next);
+        if (month === 12){
+            mo.removeAll();
+            const nextYr = nextYear();
+            getMonth(nextYr, month)
+            viewModel.month(nextYear())
+        }
     },
     previousMonth: function(_d,e){
         mo.removeAll();

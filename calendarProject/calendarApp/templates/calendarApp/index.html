@@ -45,7 +45,10 @@
                     <!-- ko foreach: mo -->
                 <tr>
                     <!-- ko foreach: $data -->
-                    <td data-bind="text: $data"></td>
+                    <td>
+                        <p data-bind="text: $data"></p>
+<!--                        <input type="text" data-bind="text: $data" class="textInput">-->
+                    </td>
                     <!-- /ko -->
                 </tr>
                     <!-- /ko -->
@@ -71,7 +74,8 @@
         <button class="prevBtn" data-bind="click: previousMonth">prev</button>
     </div>
     <select name="selectYear" data-bind="foreach: years, click: selectYear">
-        <option data-bind="text: $data">years</option>
+        <option value="" selected disabled hidden>Years</option>
+        <option data-bind="text: $data"></option>
     </select>
     <script src="{% static 'script.js' %}"></script>
 </body>
