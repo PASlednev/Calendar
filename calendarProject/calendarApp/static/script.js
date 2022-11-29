@@ -67,7 +67,6 @@
     }
 
 
-
 let now = new Date();
 day = now.getDate();
 month = now.getMonth();
@@ -116,6 +115,7 @@ const m_calendar = {
     day: ko.observable(day),
     month: ko.observable(month),
     year: ko.observable(year),
+    selectDay: ko.observable(),
     nextMonth: function() {
         mo.removeAll()
         const newMonth = (this.month() + 1) % 12;
@@ -145,52 +145,12 @@ const m_calendar = {
         year = +(e.target.value)
         getMonth(year, month)
         m_calendar.year(year)
-    }
+    },
+    getDay: function(_d, e){
+        selectDay = e.target.innerText
+        m_calendar.selectDay(selectDay)
+    },
 
 }
 
 ko.applyBindings(m_calendar);
-
-
-
-//let viewModel = {
-//    monthDays: mo,
-//    month: ko.observable(month),
-//    year: ko.observable(year),
-//    weekDays: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
-//    years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030],
-//    nxtMonth: function(_d,e){
-//        mo.removeAll();
-//        const next = nextMonth();
-//        getMonth(year, next);
-//        viewModel.month(next);
-//        if (month === 12){
-//            console.log(nextYear())
-//            mo.removeAll()
-//            month = 0;
-//            const nextYr = nextYear();
-//            getMonth(nextYr, month);
-//            viewModel.year(nextYear());
-//            viewModel.month(month)
-//            console.log(month)
-//            console.log(year)
-//
-//        }
-//    },
-//    previousMonth: function(_d,e){
-//        mo.removeAll();
-//        const prev = prevMonth();
-//        getMonth(year, prev);
-//        viewModel.month(prev)
-//    },
-//    selectYear: function(_d,e){
-//        mo.removeAll()
-//        year = +(e.target.value)
-//        getMonth(year, month)
-//        viewModel.year(year)
-//    }
-//};
-//
-//ko.applyBindings(viewModel);
-//// не меняет количество дней в месяце.
-
