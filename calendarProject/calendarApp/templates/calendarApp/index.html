@@ -45,9 +45,9 @@
                     <!-- ko foreach: mo -->
                 <tr>
                     <!-- ko foreach: $data -->
-                    <td data-bind="click: m_calendar.getDay($index)">
+                    <td data-bind="click: function() {m_calendar.getDay($data)}">
                         <p data-bind="text: $data"></p>
-                        <div data-bind="if: m_calendar.displayInput($index), m_calendar.textInput" class="inputText"><input type="text"></div>
+                        <div data-bind="if: m_calendar.displayInput($data), m_calendar.textInput" class="inputText"><input type="text"></div>
                     </td>
                     <!-- /ko -->
                 </tr>

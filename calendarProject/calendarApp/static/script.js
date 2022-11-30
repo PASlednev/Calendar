@@ -104,13 +104,13 @@ function getMonth(year, month){
     return mo
 }
 let mon = getMonth(year, month)()
-console.log(mon)
+console.log(mo())
 // let years = ko.observableArray()
 
 const m_calendar = {
     weekDays: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
     years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030],
-    day: ko.observable(day),
+
     month: ko.observable(month),
     year: ko.observable(year),
     selectDay: ko.observable(),
@@ -146,16 +146,17 @@ const m_calendar = {
         getMonth(year, month)
         m_calendar.year(year)
     },
-    getDay: function(data){
+    getDay: function(data, event){
         m_calendar.selectDay(data)
-        console.log(data())
+        console.log(data)
     },
     displayInput: function(data){
-        console.log(data())
+        console.log(this.selectDay())
         return data === this.selectDay()
     }
 
 }
 
 ko.applyBindings(m_calendar);
-m_calendar.selectDay(undefined)
+//m_calendar.selectDay(undefined)
+console.log(m_calendar)
