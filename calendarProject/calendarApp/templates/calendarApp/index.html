@@ -32,10 +32,10 @@
 {{ all_month.full_name|upper }}
 {% endfor %}
 
-
 <div class="mainPanel">
     <div class="tableAndPic">
         <div class="tabelPanel">
+
             <table class="table">
                 <tr>
                     <!-- ko foreach: weekDays -->
@@ -45,9 +45,9 @@
                     <!-- ko foreach: mo -->
                 <tr>
                     <!-- ko foreach: $data -->
-                    <td data-bind="click: m_calendar.getDay">
+                    <td data-bind="click: m_calendar.getDay($data)">
                         <p data-bind="text: $data"></p>
-<!--                        <input type="text" data-bind="text: $data" class="textInput">-->
+                        <div data-bind="if: m_calendar.displayInput($data), m_calendar.textInput" class="inputText"><input type="text"></div>
                     </td>
                     <!-- /ko -->
                 </tr>

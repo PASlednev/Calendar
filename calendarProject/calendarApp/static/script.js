@@ -76,13 +76,11 @@ function getWeeks(year, month){
   let l=new Date(year, month+1, 0);
   return Math.ceil( (l.getDate()- (l.getDay()?l.getDay():7))/7 )+1;
 }
-console.log(getWeeks(2022,10))
 
 function startMonth(year, month){
     let d = new Date(year, month, 0);
     return d.getDay()
 }
-console.log(startMonth(2022,10))
 
 let mo = ko.observableArray()
 
@@ -116,6 +114,8 @@ const m_calendar = {
     month: ko.observable(month),
     year: ko.observable(year),
     selectDay: ko.observable(),
+    notice: ko.observable(),
+    inpDay: ko.observable(),
     nextMonth: function() {
         mo.removeAll()
         const newMonth = (this.month() + 1) % 12;
@@ -146,11 +146,16 @@ const m_calendar = {
         getMonth(year, month)
         m_calendar.year(year)
     },
-    getDay: function(_d, e){
-        selectDay = e.target.innerText
-        m_calendar.selectDay(selectDay)
+    getDay: function(data){
+        m_calendar.selectDay(data)
+        console.log(data)
     },
+    displayInput: function(data){
+        console.log(data, this.selectDay())
+        return data === this.selectDay()
+    }
 
 }
 
 ko.applyBindings(m_calendar);
+m_calendar.selectDay(undefined)
