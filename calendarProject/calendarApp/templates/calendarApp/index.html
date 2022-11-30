@@ -45,9 +45,9 @@
                     <!-- ko foreach: mo -->
                 <tr>
                     <!-- ko foreach: $data -->
-                    <td data-bind="click: m_calendar.getDay($data)">
+                    <td data-bind="click: m_calendar.getDay($index)">
                         <p data-bind="text: $data"></p>
-                        <div data-bind="if: m_calendar.displayInput($data), m_calendar.textInput" class="inputText"><input type="text"></div>
+                        <div data-bind="if: m_calendar.displayInput($index), m_calendar.textInput" class="inputText"><input type="text"></div>
                     </td>
                     <!-- /ko -->
                 </tr>
@@ -57,7 +57,7 @@
         <div class="leftSidePanel">
             <img class="mountainsPic" src="https://wallpaperaccess.com/full/2888312.jpg">
                 <div class="monthName">
-                    <p data-bind="text: selectDay"></p>
+                    <p data-bind="text: selectDay()"></p>
                     <p data-bind="text: month"></p>
                 </div>
                 <div class="dateNumber">

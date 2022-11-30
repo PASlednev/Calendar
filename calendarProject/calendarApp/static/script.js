@@ -148,10 +148,10 @@ const m_calendar = {
     },
     getDay: function(data){
         m_calendar.selectDay(data)
-        console.log(data)
+        console.log(data())
     },
     displayInput: function(data){
-        console.log(data, this.selectDay())
+        console.log(data())
         return data === this.selectDay()
     }
 
