@@ -47,14 +47,15 @@
                     <!-- ko foreach: $data -->
                     <td data-bind="click: function() {m_calendar.getDay($data)}">
                         <p data-bind="text: $data"></p>
-                        <div data-bind="if: m_calendar.displayInput($data), m_calendar.textInput" class="inputText"><input type="text"></div>
+                        <div data-bind="if: m_calendar.displayInput($data), m_calendar.textInput" class="inputText">
+                            <textarea name="" id="noticeText" cols="15" rows="8"></textarea></div>
                     </td>
                     <!-- /ko -->
                 </tr>
                     <!-- /ko -->
             </table>
         </div>
-        <div class="leftSidePanel">
+        <div class="leftSidePanel" data-bind="click: resetDay">
             <img class="mountainsPic" src="https://wallpaperaccess.com/full/2888312.jpg">
                 <div class="monthName">
                     <p data-bind="text: selectDay()"></p>

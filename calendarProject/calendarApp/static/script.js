@@ -41,7 +41,6 @@
     function getDaysInMonth(year, month) {
         return [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
     }
-    console.log(getDaysInMonth(2022, 10))
 
     function isLeapYear(year) {
         return (year % 400 === 0 || year % 100 !== 0) && (year % 4 == 0);
@@ -104,8 +103,6 @@ function getMonth(year, month){
     return mo
 }
 let mon = getMonth(year, month)()
-console.log(mo())
-// let years = ko.observableArray()
 
 const m_calendar = {
     weekDays: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
@@ -147,16 +144,16 @@ const m_calendar = {
         m_calendar.year(year)
     },
     getDay: function(data, event){
-        m_calendar.selectDay(data)
-        console.log(data)
+         if (typeof data == 'number')
+            m_calendar.selectDay(data)
     },
     displayInput: function(data){
-        console.log(this.selectDay())
-        return data === this.selectDay()
+        return data == this.selectDay()
+    },
+    resetDay: function(){
+        m_calendar.selectDay(undefined)
     }
-
 }
 
 ko.applyBindings(m_calendar);
 //m_calendar.selectDay(undefined)
-console.log(m_calendar)
