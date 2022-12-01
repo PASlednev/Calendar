@@ -47,8 +47,8 @@
                     <!-- ko foreach: $data -->
                     <td data-bind="click: function() {m_calendar.getDay($data)}">
                         <p data-bind="text: $data"></p>
-                        <div data-bind="if: m_calendar.displayInput($data), m_calendar.textInput" class="inputText">
-                            <textarea name="" id="noticeText" cols="15" rows="8"></textarea></div>
+                        <div data-bind="if: m_calendar.displayInput($data)" class="inputText">
+                            <textarea name="" id="noticeText" cols="15" rows="8" data-bind="textInput: m_calendar.getNotice, event: { mouseup: $root.mouseOver }, text: m_calendar.getNotice"></textarea></div>
                     </td>
                     <!-- /ko -->
                 </tr>

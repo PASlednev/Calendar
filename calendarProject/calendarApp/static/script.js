@@ -108,10 +108,10 @@ const m_calendar = {
     weekDays: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
     years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030],
 
+    notice: ko.observable(),
     month: ko.observable(month),
     year: ko.observable(year),
     selectDay: ko.observable(),
-    notice: ko.observable(),
     inpDay: ko.observable(),
     nextMonth: function() {
         mo.removeAll()
@@ -144,15 +144,26 @@ const m_calendar = {
         m_calendar.year(year)
     },
     getDay: function(data, event){
-         if (typeof data == 'number')
+        if (typeof data == 'number')
             m_calendar.selectDay(data)
+
     },
     displayInput: function(data){
         return data == this.selectDay()
     },
     resetDay: function(){
         m_calendar.selectDay(undefined)
-    }
+    },
+    getNotice: ko.observable(),
+    mouseOver: function(data, event){
+        if (m_calendar.displayInput){
+            let insideInnerHTML = event.target.innerHTML
+            m_calendar.getNotice(insideInnerHTML)
+            console.log(data)
+            console.log(m_calendar.getNotice())
+            localStorage.setItem('data', insideInnerHTML)
+        }
+    },
 }
 
 ko.applyBindings(m_calendar);
