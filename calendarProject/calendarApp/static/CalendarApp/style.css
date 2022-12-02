@@ -85,6 +85,25 @@
     top: 35%
     }
 
+    #prevBtn {
+        position: absolute;
+        left: 650px;
+        top: 30px;
+    }
+
+    #nextBtn {
+        position: absolute;
+        left: 1330px;
+        top: 30px;
+    }
+
+    #yearList {
+    position: absolute;
+    max-width: 200px;
+    top: 20px;
+    left: 20px;
+    }
+
     .dateNumber {
     position: relative;
     color: #fff;
