@@ -124,6 +124,7 @@ const m_calendar = {
             this.year(newYear);
             getMonth(newYear, newMonth)
         }
+        console.log(month)
     },
     prevMonth: function() {
         mo.removeAll();
@@ -144,11 +145,15 @@ const m_calendar = {
         m_calendar.year(year)
     },
     getDay: function(data, event){
-        if (typeof data == 'number')
+        if (typeof data == 'number'){
             m_calendar.selectDay(data)
-
+            let x = localStorage.getItem(`${data} ${month} ${year}`)
+            console.log(`${data} ${month} ${year}`)
+            m_calendar.getNotice(x)
+            }
     },
     displayInput: function(data){
+
         return data == this.selectDay()
     },
     resetDay: function(){
@@ -161,9 +166,12 @@ const m_calendar = {
             m_calendar.getNotice(insideInnerHTML)
             console.log(data)
             console.log(m_calendar.getNotice())
-            localStorage.setItem('data', insideInnerHTML)
+            const key = `${data} ${month} ${year}`
+            localStorage.setItem(key, insideInnerHTML)
+
         }
     },
+
 }
 
 ko.applyBindings(m_calendar);
