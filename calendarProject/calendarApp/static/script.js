@@ -106,8 +106,9 @@ let mon = getMonth(year, month)()
 
 const m_calendar = {
     weekDays: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
+    months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
     years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030],
-
+    curDay: ko.observable(day),
     notice: ko.observable(),
     curMonth: ko.observable(month),
     year: ko.observable(year),
@@ -125,6 +126,8 @@ const m_calendar = {
             getMonth(newYear, newMonth)
         }
         console.log(m_calendar.curMonth())
+        this.selectDay(undefined)
+        console.log(this.selectDay())
     },
     prevMonth: function() {
         mo.removeAll();
@@ -145,11 +148,12 @@ const m_calendar = {
         m_calendar.year(year)
     },
     getDay: function(data, event){
+        m_calendar.curDay(null)
         if (typeof data == 'number'){
             m_calendar.selectDay(data)
-            let x = localStorage.getItem(`${data} ${m_calendar.curMonth()} ${year}`)
+            let keyGetItem = localStorage.getItem(`${data} ${m_calendar.curMonth()} ${year}`)
             console.log(`${data} ${m_calendar.curMonth()} ${year}`)
-            m_calendar.getNotice(x)
+            m_calendar.getNotice(keyGetItem)
             }
     },
     displayInput: function(data){
@@ -162,12 +166,12 @@ const m_calendar = {
     mouseOver: function(data, event){
         let insideInnerHTML = event.target.innerHTML
         m_calendar.getNotice(insideInnerHTML)
-        console.log(data)
-        console.log(m_calendar.getNotice())
         const key = `${data} ${m_calendar.curMonth()} ${year}`
         localStorage.setItem(key, insideInnerHTML)
     },
-
+//    getMonth: function(data){
+//        return m_calendar.months(data)
+//    }
 }
 
 ko.applyBindings(m_calendar);
