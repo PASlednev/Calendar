@@ -125,7 +125,6 @@ const m_calendar = {
             this.year(newYear);
             getMonth(newYear, newMonth)
         }
-        console.log(m_calendar.curMonth())
         this.selectDay(undefined)
         console.log(this.selectDay())
     },
@@ -140,12 +139,14 @@ const m_calendar = {
             this.year(newYear)
             getMonth(newYear, newMonth);
         }
+        this.selectDay(undefined)
     },
     selectYear: function(_d,e){
         mo.removeAll()
         year = +(e.target.value)
         getMonth(year, m_calendar.curMonth())
         m_calendar.year(year)
+        this.selectDay(undefined)
     },
     getDay: function(data, event){
         m_calendar.curDay(null)
