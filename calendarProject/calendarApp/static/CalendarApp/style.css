@@ -86,15 +86,19 @@
     }
 
     #prevBtn {
-        position: absolute;
+        position: relative;
         left: 650px;
         top: 30px;
+        padding: 40px;
+        margin: -40px;
     }
 
     #nextBtn {
-        position: absolute;
+        position: relative;
         left: 1330px;
-        top: 30px;
+        top: 5px;
+        padding: 40px;
+        margin: -40px;
     }
 
     #yearList {
