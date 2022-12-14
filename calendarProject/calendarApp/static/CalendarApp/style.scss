@@ -1,0 +1,84 @@
+html {
+    box-sizing: border-box;
+}
+
+*,*::after,*::before{
+    box-sizing: inherit;
+}
+
+body {
+    min-width: 375px;
+}
+
+.container{
+    padding: 0 20px;
+}
+
+.leftSidePanel{
+    position: fixed;
+    width: 95%;
+    height: 30%;
+    margin-top: 20px;
+    .mountainsPic{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+    }
+}
+
+
+.monthName{
+    position: absolute;
+    z-index: 100;
+    display: block;
+    left: 40%;
+    p{
+        font-size: 2em;
+        color: #fff;
+        margin-bottom: 0px;
+        
+    }
+}
+.dateNumber{
+    position: absolute;
+    z-index: 100;
+    left: 40%;
+    top: 40%;
+    p{
+    font-size: 3em;
+    color: #fff;
+    }
+}
+
+
+#table{
+    width: 95%;
+    height: 55%;
+    top: 40%;
+    position: fixed;
+    padding: 0 20px;
+}
+
+table{
+    table-layout: fixed;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left:0;
+}
+
+.monthSelector{
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+.form-select{
+    position:fixed;
+    top:33%;
+    max-width: 95%;
+}
+
+

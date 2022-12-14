@@ -28,7 +28,6 @@
 //console.log(arr)
 
 
-
     function setDays(number) {
         const days = getDaysInMonth(year, month);
         day = (number + days) % days;
@@ -73,7 +72,7 @@ year = now.getFullYear();
 
 function getWeeks(year, month){
   let l=new Date(year, month+1, 0);
-  return Math.ceil( (l.getDate()- (l.getDay()?l.getDay():7))/7 )+1;
+  return Math.ceil( (l.getDate() - (l.getDay()?l.getDay():7))/7 )+1;
 }
 
 function startMonth(year, month){
@@ -100,12 +99,15 @@ function getMonth(year, month){
         }
     mo.push(ar)
     }
+    m_calendar.updateWeeks();
+
     return mo
 }
-let mon = getMonth(year, month)()
+
+
 
 const m_calendar = {
-    weekDays: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
+    weekDays: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
     months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
     years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030],
     curDay: ko.observable(day),
@@ -114,25 +116,27 @@ const m_calendar = {
     year: ko.observable(year),
     selectDay: ko.observable(),
     inpDay: ko.observable(),
+    displayTA: ko.observable(false),
+    array: ko.observableArray(),
     nextMonth: function() {
         mo.removeAll()
         const newMonth = (this.curMonth() + 1) % 12;
         this.curMonth(newMonth);
-        getMonth(year, newMonth)
+        getMonth(m_calendar.year(), newMonth)
         if (newMonth === 0) {
             mo.removeAll()
             const newYear = this.year() + 1;
             this.year(newYear);
             getMonth(newYear, newMonth)
         }
-        this.selectDay(undefined)
-        console.log(this.selectDay())
+        this.selectDay(undefined);
     },
+
     prevMonth: function() {
         mo.removeAll();
         const newMonth = (this.curMonth() + 11) % 12;
         this.curMonth(newMonth);
-        getMonth(year, newMonth);
+        getMonth(m_calendar.year(), newMonth);
         if(newMonth === 11) {
             mo.removeAll()
             const newYear = this.year() - 1;
@@ -140,40 +144,74 @@ const m_calendar = {
             getMonth(newYear, newMonth);
         }
         this.selectDay(undefined)
+
     },
+
     selectYear: function(_d,e){
         mo.removeAll()
         year = +(e.target.value)
         getMonth(year, m_calendar.curMonth())
         m_calendar.year(year)
-        this.selectDay(undefined)
+        this.displayTA(false)
+        if (m_calendar.year() == 0){
+            m_calendar.year(2010)
+        }
+
     },
+
     getDay: function(data, event){
         m_calendar.curDay(null)
         if (typeof data == 'number'){
+            this.displayTA(true)
             m_calendar.selectDay(data)
-            let keyGetItem = localStorage.getItem(`${data} ${m_calendar.curMonth()} ${year}`)
-            console.log(`${data} ${m_calendar.curMonth()} ${year}`)
+            const key = `${data} ${m_calendar.curMonth()} ${year}`
+            let keyGetItem = localStorage.getItem(key)
             m_calendar.getNotice(keyGetItem)
             }
     },
-    displayInput: function(data){
-        return data == this.selectDay()
-    },
+
     resetDay: function(){
-        m_calendar.selectDay(undefined)
+        m_calendar.displayTA(false)
     },
+
     getNotice: ko.observable(),
-    mouseOver: function(data, event){
-        let insideInnerHTML = event.target.innerHTML
-        m_calendar.getNotice(insideInnerHTML)
-        const key = `${data} ${m_calendar.curMonth()} ${year}`
-        localStorage.setItem(key, insideInnerHTML)
+    mouseOver: function(event){
+        const data = m_calendar.selectDay();
+        const key = `${data} ${m_calendar.curMonth()} ${year}`;
+        localStorage.setItem(key, m_calendar.getNotice());
     },
-//    getMonth: function(data){
-//        return m_calendar.months(data)
-//    }
+    displayBadges: function(data){
+        const key = `${data} ${m_calendar.curMonth()} ${year}`;
+        // console.log(mouseOver())
+        // console.log(localStorage.getItem(key))
+        return localStorage.getItem(key)
+        // if (event.getNotice(keyGetItem) != ''){
+        //     (m_calendar.displayBadges(true))
+        // }
+    },
+    
+    isWeekDay: function(data){
+        if (typeof data == 'number'){
+            return +(m_calendar.array()[data - 1])
+        }
+        return false
+    },
+
+ updateWeeks: function() {
+    fetch(`https://isdayoff.ru/api/getdata?year=${m_calendar.year()}&month=${m_calendar.curMonth() + 1}`)
+    .then(async data => {
+        let arra = []
+        arra = await data.text()
+        let workDayArr = []
+        for (let i = 0; i < arra.length; i++){
+            workDayArr.push(arra[i])
+        }
+        m_calendar.array(workDayArr)
+    });
+}
+
 }
 
 ko.applyBindings(m_calendar);
 //m_calendar.selectDay(undefined)
+let mon = getMonth(year, month)()
