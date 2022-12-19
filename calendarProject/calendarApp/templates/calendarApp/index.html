@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 {% load static %}
 <link rel="stylesheet" href="{% static 'CalendarApp/style.css' %}">
 <html lang="ru">
@@ -42,10 +43,11 @@
                 <!-- ko foreach: mo -->
                 <tr>
                     <!-- ko foreach: $data -->
-                    <td class='showTextArea' data-bind="click: function() {m_calendar.getDay($data, event)}, style: { color: m_calendar.isWeekDay($data) ? 'red' : 'black' }">
+                    <td class='showTextArea'
+                        data-bind="click: function() {m_calendar.getDay($data, event)}, style: { color: m_calendar.isWeekDay($data) ? 'red' : 'black' }">
                         <p data-bind="text: $data"></p>
-                        <div data-bind="if: m_calendar.displayBadges($data)"class="base">
-                            <div class="indicator" >
+                        <div data-bind="if: m_calendar.displayBadges($data)" class="base">
+                            <div class="indicator" data-bind="if: m_calendar.displayBadges($data)">
                                 <div class="noti_count" role="status"></div>
                             </div>
                         </div>
@@ -54,8 +56,13 @@
                 </tr>
                 <!-- /ko -->
                 <div data-bind="if: displayTA">
+                    <form action="api/" method="post" id="usrForm"></form>
+                    {% csrf_token %}
+                    {{ form.as_p }}
                     <textarea name="" id="noticeText" cols="15" rows="8"
-                        data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.mouseOver }, text: m_calendar.getNotice"></textarea>
+                        data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.mouseOver }, text: m_calendar.getNotice" form="usrForm">
+                    </textarea>
+                    </form>
                 </div>
             </table>
         </div>
@@ -71,13 +78,12 @@
                     <p data-bind="text: year"></p>
                 </div>
             </div>
-
             <div class="monthSelector">
-                <div class="nextMonth">
+                <div class="prevMonth">
                     <span class="material-symbols-outlined" data-bind="click: prevMonth"
                         id="prevBtn">arrow_back_ios</span>
                 </div>
-                <div class="prevMonth">
+                <div class="nextMonth">
                     <span class="material-symbols-outlined" data-bind="click: nextMonth"
                         id="nextBtn">arrow_forward_ios</span>
                 </div>

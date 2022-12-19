@@ -16,7 +16,7 @@ from calendar import HTMLCalendar
 
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from .forms import UserRegisterForm, UserLoginForm
+from .forms import *
 
 
 # day_of_the_week = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс']
@@ -53,6 +53,14 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'calendarApp/register.html', {"form": form})
+
+def api(request):
+    if request.method == 'POST':
+        form = NoticeForm(request.POST)
+        if form.is_valid():
+            form.save()
+        else:
+            form = NoticeForm()
 
 
 def index(request):

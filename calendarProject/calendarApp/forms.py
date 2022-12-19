@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-
+from django.forms import ModelForm
 from .models import *
 
 
@@ -20,3 +20,14 @@ class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+
+
+class NoticeForm(ModelForm):
+
+    class Meta:
+        model = Notice
+        fields = ['noticeText']
+        widgets = {
+            'noticeText': forms.Textarea(attrs={'data-bind': 'textInput: m_calendar.getNotice, event: { keyup: $root.mouseOver }, text: m_calendar.getNotice'})
+        }

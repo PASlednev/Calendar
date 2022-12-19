@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'calendarApp.apps.CalendarappConfig',
+    # 'knockout_modeler',
 ]
 
 ROOT_URLCONF = 'calendarProject.urls'
