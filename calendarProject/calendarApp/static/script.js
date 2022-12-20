@@ -104,6 +104,10 @@ function getMonth(year, month) {
 }
 
 
+
+
+
+
 const m_calendar = {
     weekDays: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
     allMonth: ko.observableArray(["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]),
@@ -172,10 +176,32 @@ const m_calendar = {
     },
 
     getNotice: ko.observable(),
-    mouseOver: function (event) {
+    keyUpEv: function (event) {
         const data = m_calendar.selectDay();
         const key = `${data} ${m_calendar.curMonth()} ${year}`;
         localStorage.setItem(key, m_calendar.getNotice());
+        // console.log(event.getNotice())
+            async function doRequest() {
+                let url = 'http://127.0.0.1:8000/api/';
+                let res = await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify({text: event.getNotice(), id: key}),
+                    headers: { 'X-CSRFToken': 'ydDypcGBzn4tut2I0IDNBenmR3F9FsgePL058VwTa3TRFTQnNT6IHVpvYhgBiXIQ', 'Content-Type': 'application/json' },
+                })
+                if (res.ok) {
+        
+                    let text = await res.text();
+                    // console.log(res)
+        
+                    return text;
+                } else {
+                    return `HTTP error: ${res.status}`;
+                }
+            }
+            setTimeout(() => doRequest().then(data => {
+                console.log(data);
+            }), 3000 )
+            
     },
     displayBadges: function (data) {
         const key = `${data} ${m_calendar.curMonth()} ${year}`;
@@ -201,29 +227,6 @@ const m_calendar = {
                 m_calendar.array(workDayArr)
             });
     },
-
-
-    getNoticeText: document.addEventListener('DOMContentLoaded', function(){
-        async function doRequest() {
-            let url = 'http://127.0.0.1:8000/api/';
-            let res = await fetch(url);
-    
-            if (res.ok) {
-    
-                let text = await res.text();
-    
-                return text;
-            } else {
-                return `HTTP error: ${res.status}`;
-            }
-        }
-    
-        doRequest().then(data => {
-            console.log(data);
-        });
-    })
-    
-
 }
 
 // nameMonth: ko.computed(function(){

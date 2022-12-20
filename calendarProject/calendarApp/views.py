@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 
 import math
@@ -8,7 +9,7 @@ from itertools import count
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.db import models
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from .models import *
 import calendar, locale
@@ -16,9 +17,7 @@ from calendar import HTMLCalendar
 
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from .forms import *
-
-
+from .forms import * 
 # day_of_the_week = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс']
 month = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октаябрь', 'Ноябрь', 'Декабрь']
 
@@ -42,6 +41,7 @@ def user_logout(request):
 
 
 def register(request):
+    
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -52,15 +52,26 @@ def register(request):
             messages.error(request, 'Ошибка регистрации')
     else:
         form = UserRegisterForm()
+    
     return render(request, 'calendarApp/register.html', {"form": form})
 
 def api(request):
+    parse_obj = request.body
+    parse_text = json.loads(parse_obj)
+    print(parse_text['text'])
+    print(parse_text['id'])
+    b2 = Notice(noticeText = parse_text['text'])
+    b2.save()
+
     if request.method == 'POST':
         form = NoticeForm(request.POST)
         if form.is_valid():
             form.save()
         else:
             form = NoticeForm()
+    response = JsonResponse({}, status=200)
+    return response
+    
 
 
 def index(request):

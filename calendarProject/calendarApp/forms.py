@@ -28,6 +28,4 @@ class NoticeForm(ModelForm):
     class Meta:
         model = Notice
         fields = ['noticeText']
-        widgets = {
-            'noticeText': forms.Textarea(attrs={'data-bind': 'textInput: m_calendar.getNotice, event: { keyup: $root.mouseOver }, text: m_calendar.getNotice'})
-        }
+        

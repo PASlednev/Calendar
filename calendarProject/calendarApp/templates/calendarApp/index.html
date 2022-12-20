@@ -56,11 +56,11 @@
                 </tr>
                 <!-- /ko -->
                 <div data-bind="if: displayTA">
-                    <form action="api/" method="post" id="usrForm"></form>
+                    <form action="api/" method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <textarea name="" id="noticeText" cols="15" rows="8"
-                        data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.mouseOver }, text: m_calendar.getNotice" form="usrForm">
+                        data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.keyUpEv }, text: m_calendar.getNotice">
                     </textarea>
                     </form>
                 </div>
