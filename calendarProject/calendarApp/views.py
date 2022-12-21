@@ -60,8 +60,10 @@ def api(request):
     parse_text = json.loads(parse_obj)
     print(parse_text['text'])
     print(parse_text['id'])
-    b2 = Notice(noticeText = parse_text['text'])
+    b2 = Notice(noticeText = parse_text['text'], selectedDate = parse_text['id'])
     b2.save()
+    # b3 = Notice(selectedDate = parse_text['id'])
+    # b3.save()
 
     if request.method == 'POST':
         form = NoticeForm(request.POST)

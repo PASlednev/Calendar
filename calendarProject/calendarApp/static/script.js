@@ -181,27 +181,7 @@ const m_calendar = {
         const key = `${data} ${m_calendar.curMonth()} ${year}`;
         localStorage.setItem(key, m_calendar.getNotice());
         // console.log(event.getNotice())
-            async function doRequest() {
-                let url = 'http://127.0.0.1:8000/api/';
-                let res = await fetch(url, {
-                    method: 'POST',
-                    body: JSON.stringify({text: event.getNotice(), id: key}),
-                    headers: { 'X-CSRFToken': 'ydDypcGBzn4tut2I0IDNBenmR3F9FsgePL058VwTa3TRFTQnNT6IHVpvYhgBiXIQ', 'Content-Type': 'application/json' },
-                })
-                if (res.ok) {
-        
-                    let text = await res.text();
-                    // console.log(res)
-        
-                    return text;
-                } else {
-                    return `HTTP error: ${res.status}`;
-                }
-            }
-            setTimeout(() => doRequest().then(data => {
-                console.log(data);
-            }), 3000 )
-            
+        f()
     },
     displayBadges: function (data) {
         const key = `${data} ${m_calendar.curMonth()} ${year}`;
@@ -238,3 +218,34 @@ ko.applyBindings(m_calendar);
 let mon = getMonth(year, month)()
 
 
+async function doRequest() {
+    const data = m_calendar.selectDay();
+    const year = m_calendar.year();
+    let url = 'http://127.0.0.1:8000/api/';
+    let res = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({text: m_calendar.getNotice(), id: `${data} ${m_calendar.curMonth()} ${year}`}),
+        headers: { 'X-CSRFToken': 'ydDypcGBzn4tut2I0IDNBenmR3F9FsgePL058VwTa3TRFTQnNT6IHVpvYhgBiXIQ', 'Content-Type': 'application/json' },
+    })
+    if (res.ok) {
+
+        let text = await res.text();
+        // console.log(res)
+
+        return text;
+    } else {
+        return `HTTP error: ${res.status}`;
+    }
+}
+
+const debounce = (callback, delay) => {
+    let timeout;
+
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            callback.apply(this, args)
+        }, delay)
+    };
+};
+const f = debounce(doRequest, 1000)

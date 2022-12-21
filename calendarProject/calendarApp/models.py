@@ -4,6 +4,7 @@ from django.db import models
 class Notice(models.Model):
     noticeText = models.TextField(verbose_name='Текст заметки', max_length=500)
     timeCreate = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+    selectedDate = models.CharField(verbose_name='дата в календаре', max_length=20)
 
     def __str__(self):
         return self.noticeText
