@@ -8,7 +8,6 @@ class Notice(models.Model):
 
     def __str__(self):
         return self.noticeText
-
     class Meta:
         verbose_name = 'Поле заметки'
         verbose_name_plural = 'Поля заметок'

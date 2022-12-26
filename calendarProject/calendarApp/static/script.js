@@ -1,31 +1,3 @@
-//
-//allYear = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]
-//allMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-//
-//
-//function amountOfMonth (month, year) {
-//    let yr = !((year % 4) || (!(year % 100) && (year % 400)))
-//    if (month == 0 || month == 2 || month == 4 || month == 6 || month == 7 || month == 9 || month == 11)
-//        return 31
-//    else if ((yr && month == 1))
-//        return 29
-//    else if (month == 1)
-//        return 28
-//    else
-//        return 30
-//}
-//
-//
-//let mon = amountOfMonth(1, 2004)
-//let arr = []
-//let curMonth = []
-//for (let i = 1; i <= mon; i++){
-//    arr.push(i);
-//}
-//let currentMonth = arr.join(' ')
-//console.log(currentMonth)
-//console.log(mon)
-//console.log(arr)
 
 function setDays(number) {
     const days = getDaysInMonth(year, month);
@@ -181,7 +153,7 @@ const m_calendar = {
         const key = `${data} ${m_calendar.curMonth()} ${year}`;
         localStorage.setItem(key, m_calendar.getNotice());
         // console.log(event.getNotice())
-        f()
+        debounceFunc()
     },
     displayBadges: function (data) {
         const key = `${data} ${m_calendar.curMonth()} ${year}`;
@@ -207,11 +179,10 @@ const m_calendar = {
                 m_calendar.array(workDayArr)
             });
     },
+
+    
 }
 
-// nameMonth: ko.computed(function(){
-//     console.log(m_calendar.allMonth()[m_calendar.curMonth()])
-// }, this)
 
 ko.applyBindings(m_calendar);
 //m_calendar.selectDay(undefined)
@@ -225,7 +196,7 @@ async function doRequest() {
     let res = await fetch(url, {
         method: 'POST',
         body: JSON.stringify({text: m_calendar.getNotice(), id: `${data} ${m_calendar.curMonth()} ${year}`}),
-        headers: { 'X-CSRFToken': 'ydDypcGBzn4tut2I0IDNBenmR3F9FsgePL058VwTa3TRFTQnNT6IHVpvYhgBiXIQ', 'Content-Type': 'application/json' },
+        headers: { 'X-CSRFToken': 'hdraQaofpezSxRHz9OufCqyAooQ8cxIU8RJtYfKLWn0FnjFr8IleygXFYJb3OlKW', 'Content-Type': 'application/json' },
     })
     if (res.ok) {
 
@@ -248,4 +219,4 @@ const debounce = (callback, delay) => {
         }, delay)
     };
 };
-const f = debounce(doRequest, 1000)
+const debounceFunc = debounce(doRequest, 2000)

@@ -33,76 +33,105 @@
 
 
     <div class="container">
-        <div id="table">
-            <table class="table">
-                <tr>
-                    <!-- ko foreach: weekDays -->
-                    <td data-bind="text: $data" class="weekDays"></td>
-                    <!-- /ko -->
-                </tr>
-                <!-- ko foreach: mo -->
-                <tr>
-                    <!-- ko foreach: $data -->
-                    <td class='showTextArea'
-                        data-bind="click: function() {m_calendar.getDay($data, event)}, style: { color: m_calendar.isWeekDay($data) ? 'red' : 'black' }">
-                        <p data-bind="text: $data"></p>
-                        <div data-bind="if: m_calendar.displayBadges($data)" class="base">
-                            <div class="indicator" data-bind="if: m_calendar.displayBadges($data)">
-                                <div class="noti_count" role="status"></div>
+        <div class="row">
+
+            {% if request.user.is_authenticated %}
+            <li class="last"> Добро пожаловать, {{ user.username }} | <a href="{% url 'logout' %}">Выйти</a>
+            </li>
+            {% else %}
+            <li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
+            {% endif %}
+
+            <div class="yearMenu">
+                <select class="form-select" aria-label="Default select example" name="selectYear"
+                    data-bind="foreach: years, click: selectYear" id="yearList">
+                    <option value="" selected disabled hidden>Выберите год</option>
+                    <option data-bind="text: $data" class="selectYear"></option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="leftSidePanel" data-bind="click: resetDay">
+                <div class="picture">
+                    <img class="mountainsPic" src="https://wallpaperaccess.com/full/2888312.jpg">
+                    <div class="row">
+                        <div class="fullDate">
+                            <div class="monthName">
+                                <p data-bind="text: curDay()"></p>
+                                <p data-bind="text: selectDay()"></p>
+                                <p data-bind="text: allMonth()[curMonth()]"></p>
+                            </div>
+                            <div class="dateNumber">
+                                <p data-bind="text: year"></p>
                             </div>
                         </div>
-                    </td>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="prevMonth">
+                                <span class="material-symbols-outlined" data-bind="click: prevMonth"
+                                    id="prevBtn">arrow_back_ios</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="nextMonth">
+                                <span class="material-symbols-outlined" data-bind="click: nextMonth"
+                                    id="nextBtn">arrow_forward_ios</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="table">
+                <table class="table">
+                    <tr>
+                        <!-- ko foreach: weekDays -->
+                        <td data-bind="text: $data" class="weekDays"></td>
+                        <!-- /ko -->
+                    </tr>
+                    <!-- ko foreach: mo -->
+                    <tr>
+                        <!-- ko foreach: $data -->
+                        <td class='showTextArea'
+                            data-bind="click: function() {m_calendar.getDay($data, event)}, style: { color: m_calendar.isWeekDay($data) ? 'red' : 'black' }">
+                            <p data-bind="text: $data"></p>
+                            <div data-bind="if: m_calendar.displayBadges($data)" class="base">
+                                <div class="indicator" data-bind="if: m_calendar.displayBadges($data)">
+                                    <div class="noti_count" role="status"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <!-- /ko -->
+                    </tr>
                     <!-- /ko -->
-                </tr>
-                <!-- /ko -->
-                <div data-bind="if: displayTA">
-                    <form action="api/" method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <textarea name="" id="noticeText" cols="15" rows="8"
-                        data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.keyUpEv }, text: m_calendar.getNotice">
-                    </textarea>
-                    </form>
-                </div>
-            </table>
-        </div>
-        <div class="leftSidePanel" data-bind="click: resetDay">
-            <img class="mountainsPic" src="https://wallpaperaccess.com/full/2888312.jpg">
-            <div class="fullDate">
-                <div class="monthName">
-                    <p data-bind="text: curDay()"></p>
-                    <p data-bind="text: selectDay()"></p>
-                    <p data-bind="text: curMonth"></p>
-                </div>
-                <div class="dateNumber">
-                    <p data-bind="text: year"></p>
-                </div>
+                    {% if request.user.is_authenticated %}
+                    <div data-bind="if: displayTA">
+                        <form action="api/" method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <textarea class="form-control" id="exampleFormControlTextarea1" class='noticeText' cols="15" rows="8" data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.keyUpEv }, text: m_calendar.getNotice"></textarea>
+                            <!-- <textarea name="" id="noticeText" cols="15" rows="8"
+                                data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.keyUpEv }, text: m_calendar.getNotice">
+                            </textarea> -->
+                            <div class="closeTa" data-bind="click: resetDay">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                  </svg>
+                            </div>
+                        </form>
+                    </div>
+                    {% endif %}
+                </table>
             </div>
-            <div class="monthSelector">
-                <div class="prevMonth">
-                    <span class="material-symbols-outlined" data-bind="click: prevMonth"
-                        id="prevBtn">arrow_back_ios</span>
-                </div>
-                <div class="nextMonth">
-                    <span class="material-symbols-outlined" data-bind="click: nextMonth"
-                        id="nextBtn">arrow_forward_ios</span>
-                </div>
-            </div>
-        </div>
-        <div class="yearMenu">
-            <select class="form-select" aria-label="Default select example" name="selectYear"
-                data-bind="foreach: years, click: selectYear" id="yearList">
-                <option value="" selected disabled hidden>Выберите год</option>
-                <option data-bind="text: $data" class="selectYear"></option>
-            </select>
         </div>
     </div>
-    {% if request.user.is_authenticated %}
-    <li class="last"> Добро пожаловать, {{ user.username }} | <a href="{% url 'logout' %}">Выход</a>
-    </li>
-    {% else %}
-    <li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
-    {% endif %}
+    <!-- <script>
+        var csrftoken = '{{ csrf_token }}';
+        console.log(csrftoken)
+    </script> -->
     <!--    <select name="selectYear" data-bind="foreach: years, click: selectYear" class="yearList">-->
     <!--        <option value="" selected disabled hidden>Выберите год</option>-->
     <!--        <option data-bind="text: $data"></option>-->
