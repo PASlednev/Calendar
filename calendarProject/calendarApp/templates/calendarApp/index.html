@@ -20,21 +20,9 @@
     <meta charset="UTF-8">
     <title>Calendar</title>
 
-    <!--<div class="dropdownCurrentDate">-->
-    <!--    <div class="currentDayButton"><button type="button" class="btn btn-secondary btn-lg">CurrentDate</button></div>-->
-    <!--    <div class="dropdown-content">-->
-    <!--    <ul>-->
-    <!--        <li><p>2022 year</p></li>-->
-    <!--        <li><p>Date: {{ current_date }}</p></li>-->
-    <!--        <li><p>Month: {{ page_obj.object_list.0 }}</p></li>-->
-    <!--    </ul>-->
-    <!--    </div>-->
-    <!--</div>-->
-
-
     <div class="container">
-        <div class="row">
 
+        <div class="row">
             {% if request.user.is_authenticated %}
             <li class="last"> Добро пожаловать, {{ user.username }} | <a href="{% url 'logout' %}">Выйти</a>
             </li>
@@ -50,11 +38,19 @@
                 </select>
             </div>
         </div>
-        <div class="row">
-            <div class="leftSidePanel" data-bind="click: resetDay">
-                <div class="picture">
-                    <img class="mountainsPic" src="https://wallpaperaccess.com/full/2888312.jpg">
-                    <div class="row">
+
+
+        <div class="leftSidePanel" data-bind="click: resetDay">
+            <div class="picture"
+                style="background-image:url(https://preview.colorlib.com/theme/bootstrap/calendar-07/images/bg.jpg.webp); background-position:center">
+                <div class="row">
+                    <div class="col">
+                        <div class="prevMonth">
+                            <span class="material-symbols-outlined" data-bind="click: prevMonth"
+                                id="prevBtn">arrow_back_ios</span>
+                        </div>
+                    </div>
+                    <div class="col">
                         <div class="fullDate">
                             <div class="monthName">
                                 <p data-bind="text: curDay()"></p>
@@ -66,23 +62,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="prevMonth">
-                                <span class="material-symbols-outlined" data-bind="click: prevMonth"
-                                    id="prevBtn">arrow_back_ios</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="nextMonth">
-                                <span class="material-symbols-outlined" data-bind="click: nextMonth"
-                                    id="nextBtn">arrow_forward_ios</span>
-                            </div>
+                    <div class="col">
+                        <div class="nextMonth">
+                            <span class="material-symbols-outlined" data-bind="click: nextMonth"
+                                id="nextBtn">arrow_forward_ios</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div id="table">
                 <table class="table">
@@ -111,31 +100,31 @@
                         <form action="api/" method="post">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <textarea class="form-control" id="exampleFormControlTextarea1" class='noticeText' cols="15" rows="8" data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.keyUpEv }, text: m_calendar.getNotice"></textarea>
-                            <!-- <textarea name="" id="noticeText" cols="15" rows="8"
-                                data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.keyUpEv }, text: m_calendar.getNotice">
-                            </textarea> -->
+                            <textarea class="form-control" id="exampleFormControlTextarea1" class='noticeText' cols="15"
+                                rows="8" style="margin-top:4px;"
+                                data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.keyUpEv }, text: m_calendar.getNotice"></textarea>
                             <div class="closeTa" data-bind="click: resetDay">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                  </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-x-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                    <path
+                                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                </svg>
                             </div>
                         </form>
                     </div>
+                    {% else %}
+                    
                     {% endif %}
                 </table>
             </div>
         </div>
+
     </div>
     <!-- <script>
         var csrftoken = '{{ csrf_token }}';
         console.log(csrftoken)
     </script> -->
-    <!--    <select name="selectYear" data-bind="foreach: years, click: selectYear" class="yearList">-->
-    <!--        <option value="" selected disabled hidden>Выберите год</option>-->
-    <!--        <option data-bind="text: $data"></option>-->
-    <!--    </select>-->
     <script src="{% static 'script.js' %}"></script>
 </body>
 </head>

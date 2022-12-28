@@ -103,7 +103,7 @@ const m_calendar = {
             this.year(newYear);
             getMonth(newYear, newMonth)
         }
-        this.selectDay(undefined);
+        // this.selectDay(undefined);
     },
 
     prevMonth: function () {
@@ -117,7 +117,7 @@ const m_calendar = {
             this.year(newYear)
             getMonth(newYear, newMonth);
         }
-        this.selectDay(undefined)
+        // this.selectDay(undefined)
 
     },
 
@@ -155,6 +155,7 @@ const m_calendar = {
         // console.log(event.getNotice())
         debounceFunc()
     },
+
     displayBadges: function (data) {
         const key = `${data} ${m_calendar.curMonth()} ${year}`;
         return localStorage.getItem(key)
@@ -196,7 +197,7 @@ async function doRequest() {
     let res = await fetch(url, {
         method: 'POST',
         body: JSON.stringify({text: m_calendar.getNotice(), id: `${data} ${m_calendar.curMonth()} ${year}`}),
-        headers: { 'X-CSRFToken': 'hdraQaofpezSxRHz9OufCqyAooQ8cxIU8RJtYfKLWn0FnjFr8IleygXFYJb3OlKW', 'Content-Type': 'application/json' },
+        headers: { 'X-CSRFToken': 'hdraQaofpezSxRHz9OufCqyAooQ8cxIU8RJtYfKLWn0FnjFr8IleygXFYJb3OlKWp', 'Content-Type': 'application/json' },
     })
     if (res.ok) {
 
