@@ -132,20 +132,25 @@ const m_calendar = {
         }
     },
 
+    
     getDay: function (data, event) {
         m_calendar.curDay(null)
-        if (typeof data == 'number') {
+        if (typeof data == 'number' && this.displayTA()==false) {
             this.displayTA(true)
             m_calendar.selectDay(data)
             const key = `${data} ${m_calendar.curMonth()} ${year}`
             let keyGetItem = localStorage.getItem(key)
             m_calendar.getNotice(keyGetItem)
         }
+        else{
+            this.displayTA(false)
+        }
     },
 
     resetDay: function () {
         m_calendar.displayTA(false)
     },
+
 
     getNotice: ko.observable(),
     keyUpEv: function (event) {
@@ -158,7 +163,10 @@ const m_calendar = {
 
     displayBadges: function (data) {
         const key = `${data} ${m_calendar.curMonth()} ${year}`;
-        return localStorage.getItem(key)
+        if (isAuth == true)
+            return localStorage.getItem(key)
+        else
+            return false
     },
 
     isWeekDay: function (data) {
