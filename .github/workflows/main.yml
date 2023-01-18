@@ -1,0 +1,17 @@
+name: Deployment
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Install Python dependencies
+        uses: py-actions/py-dependency-install@v4
+        with:
+          path: "./requirements.txt"
+      - name: Build app
+        uses: isbang/compose-action@v1.4.1
+        with:
+          compose-file: "./docker-compose.yml"
+      
