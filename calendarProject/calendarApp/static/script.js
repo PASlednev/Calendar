@@ -132,17 +132,17 @@ const m_calendar = {
         }
     },
 
-    
+
     getDay: function (data, event) {
         m_calendar.curDay(null)
-        if (typeof data == 'number' && this.displayTA()==false) {
+        if (typeof data == 'number' && this.displayTA() == false) {
             this.displayTA(true)
             m_calendar.selectDay(data)
             const key = `${data} ${m_calendar.curMonth()} ${year}`
             let keyGetItem = localStorage.getItem(key)
             m_calendar.getNotice(keyGetItem)
         }
-        else{
+        else {
             this.displayTA(false)
         }
     },
@@ -155,14 +155,14 @@ const m_calendar = {
     getNotice: ko.observable(),
     keyUpEv: function (event) {
         const data = m_calendar.selectDay();
-        const key = `${data} ${m_calendar.curMonth()} ${year}`;
+        const key = `${data} ${m_calendar.curMonth()} ${m_calendar.year()}`;
         localStorage.setItem(key, m_calendar.getNotice());
         // console.log(event.getNotice())
         debounceFunc()
     },
 
     displayBadges: function (data) {
-        const key = `${data} ${m_calendar.curMonth()} ${year}`;
+        const key = `${data} ${m_calendar.curMonth()} ${m_calendar.year()}`;
         if (isAuth == true)
             return localStorage.getItem(key)
         else
@@ -189,7 +189,7 @@ const m_calendar = {
             });
     },
 
-    
+
 }
 
 
@@ -204,7 +204,7 @@ async function doRequest() {
     let url = 'http://127.0.0.1:8000/api/';
     let res = await fetch(url, {
         method: 'POST',
-        body: JSON.stringify({text: m_calendar.getNotice(), id: `${data} ${m_calendar.curMonth()} ${year}`}),
+        body: JSON.stringify({ text: m_calendar.getNotice(), id: `${data} ${m_calendar.curMonth()} ${m_calendar.year()}` }),
         headers: { 'X-CSRFToken': 'hdraQaofpezSxRHz9OufCqyAooQ8cxIU8RJtYfKLWn0FnjFr8IleygXFYJb3OlKWp', 'Content-Type': 'application/json' },
     })
     if (res.ok) {
@@ -221,7 +221,7 @@ async function doRequest() {
 const debounce = (callback, delay) => {
     let timeout;
 
-    return function(...args) {
+    return function (...args) {
         clearTimeout(timeout);
         timeout = setTimeout(() => {
             callback.apply(this, args)
@@ -229,3 +229,272 @@ const debounce = (callback, delay) => {
     };
 };
 const debounceFunc = debounce(doRequest, 2000)
+
+
+let monthSwipe = document.querySelector('.table')
+monthSwipe.addEventListener('touchstart', handleTouchStart, false)
+monthSwipe.addEventListener('touchmove', handleTouchMove, false)
+
+let x1 = null
+let x2 = null
+
+function handleTouchStart(event) {
+    const firstTouch = event.touches[0]
+    x1 = firstTouch.clientX
+    y1 = firstTouch.clientY
+}
+
+function handleTouchMove(event) {
+    if (!x1 || !y1) {
+        return false;
+    }
+    let x2 = event.touches[0].clientX
+    let y2 = event.touches[0].clientY
+
+    let xDiff = x2 - x1;
+    let yDiff = y2 - y1;
+
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (xDiff > 0) {
+            m_calendar.prevMonth()
+        }
+        else {
+            m_calendar.nextMonth()
+        }
+    }
+    // else
+    //     if (yDiff > 0) {
+    //         console.log('down')
+    //     }
+    //     else {
+    //         console.log('top')
+    //     }
+
+    x1 = null
+    y1 = null
+
+}
+
+/////////////////////////////////////////////////////////////////////
+
+
+// function validParentheses(parens) {
+//     for (let i = 0; i < parents.length; i++){
+//         if (parents[0] == ')')
+//             return false
+//     }
+    
+//   }
+
+// let a = [1, 4, 8, 7, 3, 15]
+// let b = 8
+
+// function sumPairs(ints, s) {
+//     ints.filter((item, index, array) => {
+        
+//     }, 0)
+//   }
+
+// console.log(sumPairs(a,b))
+
+// let a = '())(()'
+// function validParentheses(parens) {
+//     let counter = 0
+//     for (let i = 0; i < parens.length; i++){
+//         if (parens[0] == ')')
+//             return false
+//         if (parens.at(-1) == '(')
+//             return false
+//         if (parens[i] == '(')
+//             counter += 1
+//         else if (parens[i] == ')'){
+//             counter -= 1
+//         }
+//         if (counter < 0)
+//             return false
+//     }
+//     if (counter == 0)
+//             return true
+//     else return false
+//   }
+
+// console.log(validParentheses(a))
+
+
+// let a = [4, 3, 2, 3, 4]
+// let b = 6
+
+// function sumPairs(ints, s){
+//     let arr = []
+//     let ar = []
+//     for (let i = 0; i < ints.length; i++){
+//         for (let k = i+1; k < ints.length; k++){
+//             if (ints[i] + ints[k] == s){
+//                 arr.push([ints[i], ints[k], k])
+//             }
+//         }
+//     }
+//     arr.forEach(item => {
+//         item.forEach((data) => {
+//             console.log(item)
+//         })
+//     })
+//     return arr
+
+// }
+// console.log(sumPairs(a,b))
+
+
+
+// for (let i = 0; i < arr.length; i++){
+    //     for (let k = i+1; k<arr.length; k++){
+    //         if (arr[i].at(-1) < arr[k].at(-1)){
+    //             arr.splice(arr[k])
+    //         }
+    //         else 
+    //             arr.splice(arr[i])
+    //     }
+    //
+
+
+
+// a = 123123123123
+// function nextBigger(n){
+//     let arr = []
+//     let lenVal = Math.floor(Math.log10(n)) + 1
+//     for (let i = 0; i < lenVal; i++){
+//         arr.push(i)
+//     }
+//     return arr
+// }
+// console.log(nextBigger(a))
+
+// let a = [0, 0, -2, 3]
+// let b = 2
+
+// function sumPairs(ints, s) {
+//     let index = ints.length;
+//     let pair = [];
+//     for (let i = 0; i < ints.length; i++) {
+//         for (let k = i + 1; k < ints.length; k++) {
+//             if (ints[i] + ints[k] == s && k < index) {
+//                 index = k;
+//                 pair = [ints[i] ,ints[k]];
+//             }
+//         }
+//     }
+//     if (!pair.length)
+//         return undefined
+
+//     return pair
+// }
+
+// console.log(sumPairs(a, b))
+
+// function sumPairs(ints, s) {
+//     let arr = []
+//     let ar = []
+//     let y = 10
+//     let finishArr = []
+//     for (let i = 0; i < ints.length; i++) {
+//         for (let k = i + 1; k < ints.length; k++) {
+//             if (ints[i] + ints[k] == s) {
+//                 arr.push([ints[i], ints[k], k])
+//             }
+//         }
+//     }
+//     for (let i = 0; i < arr.length; i++) {
+//         if (arr[i][2] < y) {
+//             y = arr[i][2]
+//         }
+//     }
+//     for (let i = 0; i < arr.length; i++) {
+//         if (arr[i][2] == y)
+//             finishArr = arr[i]
+//     }
+//     finishArr.pop()
+//     return finishArr
+// }
+
+// console.log(sumPairs(a,b))
+
+
+// let aa = [4, 3, 2, 3, 4]
+// let bb = 6
+
+// var sum_pairs = function(ints, s) {
+//     set = new Set();
+    
+//     for (let i of ints) {
+//       if (set.has(s - i)) {
+//         return [ s - i, i ];
+//       }
+      
+//       set.add(i);
+//     }
+// }
+
+// console.log(sum_pairs(aa,bb))
+
+
+// let timestamp =359999
+// console.log(timestamp % 60)
+
+
+//let i = Math.floor(Math.log10(n)) + 1
+
+
+
+// function nextBigger(n){
+//     let arr = ('' + n).split('').map(Number)
+//     let ar = []
+//     for (let i = 0; i < arr.length; i++){
+//         for (let k = i + 1; k <= arr.length; k++){
+//             if (arr[k] > arr[i]){
+//                 arr[i, k] = arr[k, i]
+//             }
+//         }
+//     }
+//     return arr
+// }
+// console.log(nextBigger(2017))
+
+
+// function nextBigger(n){
+//     let arr = ('' + n).split('').map(Number)
+//     let swapped
+//     console.log(arr)
+//     do {
+//         swapped = false
+//         arr.forEach((item,index) => {
+//             if (item > arr[index + 1]){
+//                 let temp = item
+//                 arr[index] = arr[index + 1]
+//                 arr[index + 1] = temp
+//                 swapped = true
+//             }
+//         })
+//     } while (swapped)
+//     return arr
+// }
+// console.log(nextBigger(2017))
+
+// function toUnderscore(string) {
+//     let ar = []
+//     num = '0123456789'
+//     string = String(string)
+//     ar.push(string[0].toString().toLowerCase())
+//     for (let i = 1; i < string.length; i++){
+//         if (num.includes(string[i])){
+//             ar.push(string[i])
+//         }
+//         else if (string[i] == string[i].toUpperCase()){
+//             ar.push('_')
+//             ar.push(string[i].toLowerCase())
+//         }
+//         else 
+//             ar.push(string[i])
+//     }
+//     return ar.join('')
+// }
+// console.log(toUnderscore(5))  

@@ -20,7 +20,7 @@
     <meta charset="UTF-8">
     <title>Calendar</title>
 
-    <div class="container">
+    <div class="container" style="margin-top:5%">
 
         <div class="row">
             {% if request.user.is_authenticated %}
@@ -39,80 +39,81 @@
             </div>
         </div>
 
-
-        <div class="leftSidePanel" data-bind="click: resetDay">
-            <div class="picture"
-                style="background-image:url(https://preview.colorlib.com/theme/bootstrap/calendar-07/images/bg.jpg.webp); background-position:center">
-                <div class="row">
-                    <div class="col">
-                        <div class="prevMonth">
-                            <span class="material-symbols-outlined" data-bind="click: prevMonth"
-                                id="prevBtn">arrow_back_ios</span>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="fullDate">
-                            <div class="monthName">
-                                <p data-bind="text: curDay()"></p>
-                                <p data-bind="text: selectDay()"></p>
-                                <p data-bind="text: allMonth()[curMonth()]"></p>
-                            </div>
-                            <div class="dateNumber">
-                                <p data-bind="text: year"></p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="picture"
+                    style="background-image:url(https://preview.colorlib.com/theme/bootstrap/calendar-07/images/bg.jpg.webp); background-position:center">
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <div class="prevMonth">
+                                <span class="material-symbols-outlined" data-bind="click: prevMonth"
+                                    id="prevBtn">arrow_back_ios</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="nextMonth">
-                            <span class="material-symbols-outlined" data-bind="click: nextMonth"
-                                id="nextBtn">arrow_forward_ios</span>
+                        <div class="col align-self-center">
+                            <div class="fullDate">
+                                <div class="monthName">
+                                    <p data-bind="text: curDay()"></p>
+                                    <p data-bind="text: selectDay()"></p>
+                                    <p data-bind="text: allMonth()[curMonth()]"></p>
+                                </div>
+                                <div class="dateNumber">
+                                    <p data-bind="text: year"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col align-self-center">
+                            <div class="nextMonth">
+                                <span class="material-symbols-outlined" data-bind="click: nextMonth"
+                                    id="nextBtn">arrow_forward_ios</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div id="table">
-                <table class="table">
-                    <tr>
-                        <!-- ko foreach: weekDays -->
-                        <td data-bind="text: $data" class="weekDays"></td>
-                        <!-- /ko -->
-                    </tr>
-                    <!-- ko foreach: mo -->
-                    <tr>
-                        <!-- ko foreach: $data -->
-                        <td class='showTextArea'
-                            data-bind="click: function() {m_calendar.getDay($data, event)}, style: { color: m_calendar.isWeekDay($data) ? 'red' : 'black' }">
-                            <p data-bind="text: $data"></p>
-                            <div data-bind="if: m_calendar.displayBadges($data)" class="base">
-                                <div class="indicator" data-bind="if: m_calendar.displayBadges($data)">
-                                    <div class="noti_count" role="status"></div>
+            </div>
+
+            <div class="col-md-6">
+                <div id="table">
+                    <table class="table">
+                        <tr>
+                            <!-- ko foreach: weekDays -->
+                            <td data-bind="text: $data" class="weekDays"></td>
+                            <!-- /ko -->
+                        </tr>
+                        <!-- ko foreach: mo -->
+                        <tr>
+                            <!-- ko foreach: $data -->
+                            <td class='showTextArea'
+                                data-bind="click: function() {m_calendar.getDay($data, event)}, style: { color: m_calendar.isWeekDay($data) ? 'red' : 'black' }">
+                                <p data-bind="text: $data"></p>
+                                <div data-bind="if: m_calendar.displayBadges($data)" class="base">
+                                    <div class="indicator" data-bind="if: m_calendar.displayBadges($data)">
+                                        <div class="noti_count" role="status"></div>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
+                            </td>
+                            <!-- /ko -->
+                        </tr>
                         <!-- /ko -->
-                    </tr>
-                    <!-- /ko -->
-                    {% if request.user.is_authenticated %}
-                    <script>isAuth = true</script>
-                    <div data-bind="if: displayTA">
-                        <form action="api/" method="post">
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                            <textarea class="form-control" id="exampleFormControlTextarea1" class='noticeText' cols="15"
-                                rows="8" style="margin-top:4px;"
-                                data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.keyUpEv }, text: m_calendar.getNotice"></textarea>
-                        </form>
-                    </div>
-                    {% endif %}
-                </table>
+                        {% if request.user.is_authenticated %}
+                        <script>isAuth = true</script>
+                        <div data-bind="if: displayTA">
+                            <form action="api/" method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <textarea class="form-control" id="exampleFormControlTextarea1" class='noticeText'
+                                    cols="15" rows="8" style="margin-top:4px;"
+                                    data-bind="textInput: m_calendar.getNotice, event: { keyup: $root.keyUpEv }, text: m_calendar.getNotice"></textarea>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </table>
+                </div>
             </div>
         </div>
-
     </div>
-    
+
     <script src="{% static 'script.js' %}"></script>
 </body>
 </head>

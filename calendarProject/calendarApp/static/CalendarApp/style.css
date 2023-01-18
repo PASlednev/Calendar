@@ -6,12 +6,11 @@ html {
   box-sizing: inherit;
 }
 
-
-
 .picture{
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+  height: 95%;
 }
 
 .fullDate{
@@ -19,11 +18,9 @@ html {
   font-size: 2em;
   color: black;
   text-align: center;
-  vertical-align: middle;
 }
 
 .prevMonth{
-  top:40%;
   text-align: left;
   position: relative;
   cursor: pointer;
@@ -32,8 +29,6 @@ html {
 }
 
 .nextMonth{
-  top:40%;
-  right:0;
   text-align: right;
   position: relative;
   cursor: pointer;
